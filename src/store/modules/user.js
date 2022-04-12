@@ -2,14 +2,20 @@ import { getInfo, login, logout } from '@/api/login'
 import { getToken, removeToken, setToken } from '@/utils/auth'
 
 const user = {
+  // 数据
   state: {
+    // token
     token: getToken(),
+    // 姓名
     name: '',
+    // 头像
     avatar: '',
+    // 角色
     roles: [],
+    // 权限
     permissions: []
   },
-
+  // 同步操作
   mutations: {
     SET_TOKEN: (state, token) => {
       state.token = token
@@ -28,6 +34,7 @@ const user = {
     }
   },
 
+  // 事件触发
   actions: {
     // 登录
     Login({ commit }, userInfo) {
@@ -51,8 +58,8 @@ const user = {
       return new Promise((resolve, reject) => {
         getInfo().then(res => {
           const { user, roles, permissions } = res
-          console.log (user)
           const avatar = (user.avatar === "" || user.avatar == null) ? require("@/assets/images/profile.jpg") : process.env.VUE_APP_BASE_API + user.avatar;
+          console.log (avatar)
           if (roles && roles.length > 0) { // 验证返回的roles是否是一个非空数组
             commit('SET_ROLES', roles)
             commit('SET_PERMISSIONS', permissions)

@@ -7,10 +7,15 @@ import InnerLink from '@/layout/components/InnerLink'
 
 const permission = {
   state: {
+    // 全部路由 公共路由 + 动态路由
     routes: [],
+    // 添加路由
     addRoutes: [],
+    // 默认路由
     defaultRoutes: [],
+    // 顶部路由
     topbarRouters: [],
+    // 菜单路由
     sidebarRouters: []
   },
   mutations: {
@@ -35,7 +40,10 @@ const permission = {
         // 向后端请求路由数据
         getRouters().then(res => {
           const sdata = JSON.parse(JSON.stringify(res.data))
+          console.log (sdata)
           const rdata = JSON.parse(JSON.stringify(res.data))
+          console.log (rdata)
+
           const sidebarRoutes = filterAsyncRouter(sdata)
           const rewriteRoutes = filterAsyncRouter(rdata, false, true)
           const asyncRoutes = filterDynamicRoutes(dynamicRoutes);
@@ -54,8 +62,10 @@ const permission = {
 
 // 遍历后台传来的路由字符串，转换为组件对象
 function filterAsyncRouter(asyncRouterMap, lastRouter = false, type = false) {
+  // 路由过滤
   return asyncRouterMap.filter(route => {
     if (type && route.children) {
+      // 过滤子路由
       route.children = filterChildren(route.children)
     }
     if (route.component) {
