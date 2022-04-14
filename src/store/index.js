@@ -12,9 +12,13 @@ Vue.use (Vuex)
 const store = new Vuex.Store ({
   modules: {
     app,
+    // 用户信息
     user,
+    // 标签
     tagsView,
+    // 权限
     permission,
+    // 网页设置信息
     settings
   },
   getters

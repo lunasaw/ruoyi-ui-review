@@ -1,5 +1,7 @@
 <template>
+  <!--  如果是外部图标 走div 内部图标走svg 自定义class-->
   <div v-if="isExternal" :style="styleExternalIcon" class="svg-external-icon svg-icon" v-on="$listeners" />
+  <!--  aria-hidden="true" 会把整个元素从可访问性API中移除-->
   <svg v-else :class="svgClass" aria-hidden="true" v-on="$listeners">
     <use :xlink:href="iconName" />
   </svg>
@@ -21,20 +23,25 @@ export default {
     }
   },
   computed: {
-    isExternal() {
-      return isExternal(this.iconClass)
+    // 是否外部图标
+    isExternal () {
+      return isExternal (this.iconClass)
     },
-    iconName() {
+    // 图标名称
+    iconName () {
       return `#icon-${this.iconClass}`
     },
-    svgClass() {
+    // avg class获取
+    svgClass () {
       if (this.className) {
+        console.log (this.className)
+        // 这里有空格 注意：拼接类名
         return 'svg-icon ' + this.className
       } else {
         return 'svg-icon'
       }
     },
-    styleExternalIcon() {
+    styleExternalIcon () {
       return {
         mask: `url(${this.iconClass}) no-repeat 50% 50%`,
         '-webkit-mask': `url(${this.iconClass}) no-repeat 50% 50%`
@@ -55,7 +62,7 @@ export default {
 
 .svg-external-icon {
   background-color: currentColor;
-  mask-size: cover!important;
+  mask-size: cover !important;
   display: inline-block;
 }
 </style>
