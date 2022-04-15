@@ -6,8 +6,8 @@
 
 <script>
 // 全屏幕组件
-import screenfull from 'screenfull'
-import { isNotEmpty } from '@/utils/strutil'
+import screenFull from 'screenfull'
+import { isNotEmpty } from '@/utils/strtools'
 
 export default {
   name: 'Screenfull',
@@ -31,34 +31,35 @@ export default {
   },
   methods: {
     click () {
-      if (!screenfull.isEnabled) {
+      if (!screenFull.isEnabled) {
         this.$message ({ message: '你的浏览器不支持全屏', type: 'warning' })
         return false
       }
       if (isNotEmpty (this.fullElement)) {
         let elementById = document.getElementById (this.fullElement)
-        screenfull.toggle (elementById)
+        screenFull.toggle (elementById)
         return true
       }
-      screenfull.toggle ()
-      // screenfull.toggle(event.target);
-      // screenfull.toggle(elementById)
+      screenFull.toggle ()
+      // https://github.com/sindresorhus/screenfull
+      // scornful.toggle(event.target);
+      // screenFull.toggle(elementById)
       // let elementById = document.getElementById(this.fullElement)
-      // screenfull.request(elementById); // 指定元素全屏
-      // screenfull.request(element, {navigationUI: 'hide'}); // 隐藏移动设备上的导航用户界面
+      // screenFull.request(elementById); // 指定元素全屏
+      // screenFull.request(element, {navigationUI: 'hide'}); // 隐藏移动设备上的导航用户界面
 
     },
     change () {
-      this.isFullscreen = screenfull.isFullscreen
+      this.isFullscreen = screenFull.isFullscreen
     },
     init () {
-      if (screenfull.isEnabled) {
-        screenfull.on ('change', this.change)
+      if (screenFull.isEnabled) {
+        screenFull.on ('change', this.change)
       }
     },
     destroy () {
-      if (screenfull.isEnabled) {
-        screenfull.off ('change', this.change)
+      if (screenFull.isEnabled) {
+        screenFull.off ('change', this.change)
       }
     }
   }
