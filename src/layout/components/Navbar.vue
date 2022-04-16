@@ -2,7 +2,7 @@
   <div class="navbar">
     <!--引入的组件-->
     <hamburger id="hamburger-container" :is-active="sidebar.opened" class="hamburger-container" @toggleClick="toggleSideBar" />
-
+    <!-- 面包屑和topNav 只留一个 -->
     <breadcrumb id="breadcrumb-container" class="breadcrumb-container" v-if="!topNav" />
     <top-nav id="topmenu-container" class="topmenu-container" v-if="topNav" />
 
@@ -27,12 +27,13 @@
       </template>
 
       <el-dropdown class="avatar-container right-menu-item hover-effect" trigger="click">
-        <div class="avatar-wrapper" ref="avatar" >
-          <img :src="avatar" class="user-avatar">
+        <div class="avatar-wrapper" ref="avatar">
+          <img :src="avatar" class="user-avatar" ref="imgAvatar">
+          <!-- 向下箭头 -->
           <i class="el-icon-caret-bottom" />
         </div>
         <el-dropdown-menu slot="dropdown">
-          <router-link to="/user/profile">
+          <router-link to="/user/profile" :replace="true">
             <el-dropdown-item>个人中心</el-dropdown-item>
           </router-link>
           <el-dropdown-item @click.native="setting = true">
@@ -57,6 +58,7 @@ import SizeSelect from '@/components/SizeSelect'
 import Search from '@/components/HeaderSearch'
 import LunarGit from '@/components/Lunar/Git'
 import LunarDoc from '@/components/Lunar/Doc'
+import screenFull from 'screenfull'
 
 export default {
   components: {
@@ -80,6 +82,7 @@ export default {
         return this.$store.state.settings.showSettings
       },
       set (val) {
+        console.log (val)
         this.$store.dispatch ('settings/changeSetting', {
           key: 'showSettings',
           value: val
@@ -93,6 +96,13 @@ export default {
     }
   },
   methods: {
+    screenFull () {
+      console.log (this.$refs.avatar)
+      if (screenFull.isEnabled) {
+        console.log (this.$refs.imgAvatar)
+        screenFull.toggle (this.$refs.imgAvatar)
+      }
+    },
     toggleSideBar () {
       this.$store.dispatch ('app/toggleSideBar')
     },
@@ -106,6 +116,7 @@ export default {
           location.href = '/index'
         })
       }).catch (() => {
+        console.log ('取消')
       })
     }
   }

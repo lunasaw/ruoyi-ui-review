@@ -1,20 +1,13 @@
 <template>
   <div>
     <div class="user-info-head" @click="editCropper()"><img v-bind:src="options.img" title="点击上传头像" class="img-circle img-lg" /></div>
-    <el-dialog :title="title" :visible.sync="open" width="800px" append-to-body @opened="modalOpened"  @close="closeDialog">
+    <!-- 弹出层 -->
+    <el-dialog :title="title" :visible.sync="open" width="800px" append-to-body @opened="modalOpened" @close="closeDialog">
       <el-row>
         <el-col :xs="24" :md="12" :style="{height: '350px'}">
-          <vue-cropper
-            ref="cropper"
-            :img="options.img"
-            :info="true"
-            :autoCrop="options.autoCrop"
-            :autoCropWidth="options.autoCropWidth"
-            :autoCropHeight="options.autoCropHeight"
-            :fixedBox="options.fixedBox"
-            @realTime="realTime"
-            v-if="visible"
-          />
+          <!-- cropper修改层 -->
+          <vue-cropper ref="cropper" :img="options.img" :info="true" :autoCrop="options.autoCrop" :autoCropWidth="options.autoCropWidth" :autoCropHeight="options.autoCropHeight" :fixedBox="options.fixedBox"
+            @realTime="realTime" v-if="visible" />
         </el-col>
         <el-col :xs="24" :md="12" :style="{height: '350px'}">
           <div class="avatar-upload-preview">
@@ -64,7 +57,7 @@ export default {
       type: Object
     }
   },
-  data() {
+  data () {
     return {
       // 是否显示弹出层
       open: false,
@@ -84,31 +77,32 @@ export default {
   },
   methods: {
     // 编辑头像
-    editCropper() {
+    editCropper () {
       this.open = true;
     },
     // 打开弹出层结束时的回调
-    modalOpened() {
+    modalOpened () {
       this.visible = true;
     },
     // 覆盖默认的上传行为
-    requestUpload() {
+    requestUpload () {
+      // 覆盖默认的上传行为
     },
     // 向左旋转
-    rotateLeft() {
+    rotateLeft () {
       this.$refs.cropper.rotateLeft();
     },
     // 向右旋转
-    rotateRight() {
+    rotateRight () {
       this.$refs.cropper.rotateRight();
     },
     // 图片缩放
-    changeScale(num) {
+    changeScale (num) {
       num = num || 1;
       this.$refs.cropper.changeScale(num);
     },
     // 上传预处理
-    beforeUpload(file) {
+    beforeUpload (file) {
       if (file.type.indexOf("image/") == -1) {
         this.$modal.msgError("文件格式错误，请上传图片类型,如：JPG，PNG后缀的文件。");
       } else {
@@ -120,7 +114,7 @@ export default {
       }
     },
     // 上传图片
-    uploadImg() {
+    uploadImg () {
       this.$refs.cropper.getCropBlob(data => {
         let formData = new FormData();
         formData.append("avatarfile", data);
@@ -134,11 +128,11 @@ export default {
       });
     },
     // 实时预览
-    realTime(data) {
+    realTime (data) {
       this.previews = data;
     },
     // 关闭窗口
-    closeDialog() {
+    closeDialog () {
       this.options.img = store.getters.avatar
       this.visible = false;
     }
@@ -153,7 +147,7 @@ export default {
 }
 
 .user-info-head:hover:after {
-  content: '+';
+  content: "+";
   position: absolute;
   left: 0;
   right: 0;

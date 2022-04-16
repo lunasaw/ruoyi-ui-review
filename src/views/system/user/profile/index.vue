@@ -7,6 +7,7 @@
             <span>个人信息</span>
           </div>
           <div>
+            <!-- 用户头像信息组件 -->
             <div class="text-center">
               <userAvatar :user="user" />
             </div>
@@ -67,7 +68,7 @@ import { getUserProfile } from "@/api/system/user";
 export default {
   name: "Profile",
   components: { userAvatar, userInfo, resetPwd },
-  data() {
+  data () {
     return {
       user: {},
       roleGroup: {},
@@ -75,11 +76,11 @@ export default {
       activeTab: "userinfo"
     };
   },
-  created() {
+  created () {
     this.getUser();
   },
   methods: {
-    getUser() {
+    getUser () {
       getUserProfile().then(response => {
         this.user = response.data;
         this.roleGroup = response.roleGroup;

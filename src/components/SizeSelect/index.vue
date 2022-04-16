@@ -47,6 +47,7 @@ export default {
     refreshView () {
       // In order to make the cached page re-rendered
       // 以便重新渲染缓存的页面
+      // 触发vuex事件更新清理缓存
       this.$store.dispatch ('tagsView/delAllCachedViews', this.$route)
 
       // 当前视图 this.$route /index

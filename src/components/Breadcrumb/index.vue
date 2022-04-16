@@ -2,7 +2,9 @@
   <el-breadcrumb class="app-breadcrumb" separator="/">
     <transition-group name="breadcrumb">
       <el-breadcrumb-item v-for="(item,index) in levelList" :key="item.path">
-        <span v-if="item.redirect === 'noRedirect' || index == levelList.length - 1" class="no-redirect">{{ item.meta.title }}</span>
+        <span v-if="item.redirect === 'noRedirect' || index === levelList.length - 1" class="no-redirect">{{
+            item.meta.title
+          }}</span>
         <a v-else @click.prevent="handleLink(item)">{{ item.meta.title }}</a>
       </el-breadcrumb-item>
     </transition-group>
@@ -11,49 +13,56 @@
 
 <script>
 export default {
-  data() {
+  // 顶部面包屑
+  data () {
     return {
       levelList: null
     }
   },
   watch: {
-    $route(route) {
+    $route (route) {
       // if you go to the redirect page, do not update the breadcrumbs
-      if (route.path.startsWith('/redirect/')) {
+      if (route.path.startsWith ('/redirect/')) {
         return
       }
-      this.getBreadcrumb()
+      this.getBreadcrumb ()
     }
   },
-  created() {
-    this.getBreadcrumb()
+  created () {
+    // 初始化的时候获取面包屑
+    this.getBreadcrumb ()
   },
   methods: {
-    getBreadcrumb() {
+    getBreadcrumb () {
       // only show routes with meta.title
-      let matched = this.$route.matched.filter(item => item.meta && item.meta.title)
+      // 只显示带有meta.title的路由
+      console.log (this.isDashboard (this.$route))
+      let matched = this.$route.matched.filter (item => item.meta && item.meta.title)
+      // 拿到跟路由的面包屑
       const first = matched[0]
 
-      if (!this.isDashboard(first)) {
-        matched = [{ path: '/index', meta: { title: '首页' }}].concat(matched)
+      if (!this.isDashboard (first)) {
+        // 添加首页面包屑
+        matched = [{ path: '/index', meta: { title: '首页' } }].concat (matched)
       }
 
-      this.levelList = matched.filter(item => item.meta && item.meta.title && item.meta.breadcrumb !== false)
+      console.log (matched)
+      this.levelList = matched.filter (item => item.meta && item.meta.title && item.meta.breadcrumb !== false)
     },
-    isDashboard(route) {
+    isDashboard (route) {
       const name = route && route.name
       if (!name) {
         return false
       }
-      return name.trim() === 'Index'
+      return name.trim () === 'Index'
     },
-    handleLink(item) {
+    handleLink (item) {
       const { redirect, path } = item
       if (redirect) {
-        this.$router.push(redirect)
+        this.$router.push (redirect)
         return
       }
-      this.$router.push(path)
+      this.$router.push (path)
     }
   }
 }

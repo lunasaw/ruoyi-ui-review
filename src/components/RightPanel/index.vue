@@ -30,6 +30,7 @@ export default {
         return this.$store.state.settings.showSettings
       },
       set(val) {
+        // 采用vuex的方式更新showSettings 事件更新
         this.$store.dispatch('settings/changeSetting', {
           key: 'showSettings',
           value: val
