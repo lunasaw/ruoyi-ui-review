@@ -6,6 +6,7 @@
 
 <script>
 import { isExternal } from '@/utils/validate'
+import log from '@/views/monitor/job/log'
 
 export default {
   props: {
@@ -14,11 +15,14 @@ export default {
       required: true
     }
   },
+  created () {
+    console.log (this.to)
+  },
   computed: {
-    isExternal() {
-      return isExternal(this.to)
+    isExternal () {
+      return isExternal (this.to)
     },
-    type() {
+    type () {
       if (this.isExternal) {
         return 'a'
       }
@@ -26,7 +30,7 @@ export default {
     }
   },
   methods: {
-    linkProps(to) {
+    linkProps (to) {
       if (this.isExternal) {
         return {
           href: to,

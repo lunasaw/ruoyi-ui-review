@@ -9,6 +9,7 @@
       </div>
       <app-main />
       <right-panel>
+      <!-- 右侧布局 -->
         <settings />
       </right-panel>
     </div>

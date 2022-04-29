@@ -62,9 +62,11 @@ export default {
     elx.remove()
   },
   methods: {
+    // 增加点击事件监听
     addEventClick() {
       window.addEventListener('click', this.closeSidebar)
     },
+    // 关闭侧边栏
     closeSidebar(evt) {
       const parent = evt.target.closest('.rightPanel')
       if (!parent) {
@@ -72,9 +74,12 @@ export default {
         window.removeEventListener('click', this.closeSidebar)
       }
     },
+    // 插入到body中
     insertToBody() {
       const elx = this.$refs.rightPanel
+      // 拿到DOM标签
       const body = document.querySelector('body')
+      // 插入到body的第一个元素
       body.insertBefore(elx, body.firstChild)
     }
   }
