@@ -1,7 +1,32 @@
 <template>
   <div class="app-container">
     <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
-
+      <el-form-item label="用户ID" prop="userId">
+        <el-input
+            v-model="queryParams.userId"
+            placeholder="请输入用户ID"
+            clearable
+            @keyup.enter.native="handleQuery"
+        />
+      </el-form-item>
+      <el-form-item label="删除标志" prop="delFlag">
+        <el-select v-model="queryParams.delFlag" placeholder="请选择删除标志" clearable>
+          <el-option
+              v-for="dict in dict.type.tb_member_status"
+              :key="dict.value"
+              :label="dict.label"
+              :value="dict.value"
+          />
+        </el-select>
+      </el-form-item>
+      <el-form-item label="用户头像" prop="headImg">
+        <el-input
+            v-model="queryParams.headImg"
+            placeholder="请输入用户头像"
+            clearable
+            @keyup.enter.native="handleQuery"
+        />
+      </el-form-item>
       <el-form-item>
         <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
         <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
@@ -62,31 +87,34 @@
       <el-table-column type="selection" width="55" align="center" />
       <el-table-column label="用户ID" align="center" prop="userId" />
       <el-table-column label="删除标志" align="center" prop="delFlag">
+
         <template slot-scope="scope">
-          <dict-tag :options="dict.type.tb_member_status" :value="scope.row.delFlag" />
+          <el-switch v-model="scope.row.delFlag" active-value="0" inactive-value="1"
+                     @change="handleFlagChange(scope.row)"
+          ></el-switch>
         </template>
       </el-table-column>
+
+
+      <el-table-column label="用户头像" align="center" prop="headImg">
+        <template slot-scope="scope">
+          <el-image
+              style="width: 100px; height: 100px"
+              :src="scope.row.headImg" :preview-src-list="new Array(scope.row.headImg)"
+              lazy
+          ></el-image>
+        </template>
+      </el-table-column>
+      <el-table-column label="扩展字段" align="center" prop="extend" />
       <el-table-column label="创建时间" align="center" prop="createTime" width="180">
         <template slot-scope="scope">
-          <span>{{ parseTime (scope.row.createTime, '{y}-{m}-{d}') }}</span>
+          <span>{{ parseTime (scope.row.createTime, '{y}-{m}-{d} {h}:{m}:{s}') }}</span>
         </template>
       </el-table-column>
       <el-table-column label="修改时间" align="center" prop="updateTime" width="180">
         <template slot-scope="scope">
-          <span>{{ parseTime (scope.row.updateTime, '{y}-{m}-{d}') }}</span>
+          <span>{{ parseTime (scope.row.updateTime, '{y}-{m}-{d} {h}:{m}:{s}') }}</span>
         </template>
-      </el-table-column>
-      <el-table-column label="用户头像" align="center" prop="headImg">
-        <template slot-scope="scope">
-          <el-form-item label="用户头像" prop="headImg">
-            <el-image
-                style="width: 100px; height: 100px"
-                :src="scope.row.headImg"
-                :fit="fit" lazy
-            ></el-image>
-          </el-form-item>
-        </template>
-
       </el-table-column>
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
@@ -147,7 +175,8 @@
 </template>
 
 <script>
-import { listExtra, getExtra, delExtra, addExtra, updateExtra } from '@/api/user/extra'
+import { listExtra, getExtra, delExtra, addExtra, updateExtra, changeUserFlag } from '@/api/user/extra'
+import { changeUserStatus } from '@/api/system/user'
 
 export default {
   name: 'Extra',
@@ -176,6 +205,8 @@ export default {
       queryParams: {
         pageNum: 1,
         pageSize: 10,
+        userId: null,
+        delFlag: null,
         headImg: null
       },
       // 表单参数
@@ -211,6 +242,17 @@ export default {
     cancel () {
       this.open = false
       this.reset ()
+    },
+    // 用户状态修改
+    handleFlagChange (row) {
+      let text = row.delFlag === '0' ? '启用' : '停用'
+      this.$modal.confirm ('确认要"' + text + '""' + row.userId + '"用户吗？').then (function() {
+        return changeUserFlag (row.userId, row.delFlag)
+      }).then (() => {
+        this.$modal.msgSuccess ('成功')
+      }).catch (function() {
+        row.delFlag = row.delFlag === '0' ? '1' : '0'
+      })
     },
     // 表单重置
     reset () {

@@ -1,8 +1,8 @@
 import request from '@/utils/request'
 
 // 查询会员信息列表
-export function listExtra(query) {
-  return request({
+export function listExtra (query) {
+  return request ({
     url: '/user/extra/list',
     method: 'get',
     params: query
@@ -10,16 +10,16 @@ export function listExtra(query) {
 }
 
 // 查询会员信息详细
-export function getExtra(userId) {
-  return request({
+export function getExtra (userId) {
+  return request ({
     url: '/user/extra/' + userId,
     method: 'get'
   })
 }
 
 // 新增会员信息
-export function addExtra(data) {
-  return request({
+export function addExtra (data) {
+  return request ({
     url: '/user/extra',
     method: 'post',
     data: data
@@ -27,8 +27,8 @@ export function addExtra(data) {
 }
 
 // 修改会员信息
-export function updateExtra(data) {
-  return request({
+export function updateExtra (data) {
+  return request ({
     url: '/user/extra',
     method: 'put',
     data: data
@@ -36,9 +36,23 @@ export function updateExtra(data) {
 }
 
 // 删除会员信息
-export function delExtra(userId) {
-  return request({
+export function delExtra (userId) {
+  return request ({
     url: '/user/extra/' + userId,
     method: 'delete'
   })
 }
+
+// 用户会员修改
+export function changeUserFlag (userId, delFlag) {
+  const data = {
+    userId,
+    delFlag
+  }
+  return request ({
+    url: '/user/extra/' + userId,
+    method: 'put',
+    data: data
+  })
+}
+
