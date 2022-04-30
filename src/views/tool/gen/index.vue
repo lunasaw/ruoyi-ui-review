@@ -65,11 +65,11 @@
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
 
         <template slot-scope="scope">
-          <el-select v-model="vmId" placeholder="请选择生成模版" size="mini" clearable>
+          <el-select v-model="vmType" value-key="id" placeholder="请选择生成模版" size="mini" clearable>
             <el-option
-                v-for="(item,index) in vmTypes" :key="index"
-                :label="item"
-                :value="index"
+                v-for="(item) in vmTypes" :key="item.id"
+                :label="item.type"
+                :value="item.id"
             />
           </el-select>
           <el-button type="text" size="small" icon="el-icon-view" @click="handlePreview(scope.row)"
@@ -143,8 +143,8 @@ export default {
   components: { importTable },
   data () {
     return {
-      vmTypes: undefined,
-      vmId: undefined,
+      vmTypes: [],
+      vmType: '',
       // 遮罩层
       loading: true,
       // 唯一标识符
@@ -203,9 +203,9 @@ export default {
           }
       )
       previewVmIds ().then (response => {
-        console.log (response.data)
         this.vmTypes = response.data
         console.log (this.vmTypes)
+        this.vmType = this.vmTypes[0].id
       })
     },
     /** 搜索按钮操作 */
@@ -221,11 +221,11 @@ export default {
         return
       }
       if (row.genType === '1') {
-        genCode (row.tableName, this.vmId).then (response => {
+        genCode (row.tableName, this.vmType).then (response => {
           this.$modal.msgSuccess ('成功生成到自定义路径：' + row.genPath)
         })
       } else {
-        this.$download.zip ('/tool/gen/batchGenCode?tables=' + tableNames, 'ruoyi')
+        this.$download.zip ('/tool/gen/batchGenCode/' + this.vmType + '?tables=' + tableNames, 'luna')
       }
     },
     /** 同步数据库操作 */
@@ -250,7 +250,7 @@ export default {
     },
     /** 预览按钮 */
     handlePreview (row) {
-      previewTable (row.tableId, this.vmId).then (response => {
+      previewTable (row.tableId, this.vmType).then (response => {
         this.preview.data = response.data
         this.preview.open = true
         this.preview.activeName = 'domain.java'

@@ -46,7 +46,7 @@ export function importTable(data) {
 // 预览模式
 export function previewVmIds() {
   return request({
-    url: '/tool/gen/vmTypes/',
+    url: '/tool/gen/vmTypes',
     method: 'get'
   })
 }

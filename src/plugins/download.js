@@ -43,7 +43,7 @@ export default {
     })
   },
   zip(url, name) {
-    var url = baseURL + url
+    url = baseURL + url
     axios({
       method: 'get',
       url: url,
