@@ -1,4 +1,5 @@
 /**
+ * 是否网路路径
  * @param {string} path
  * @returns {Boolean}
  */
@@ -7,6 +8,7 @@ export function isExternal (path) {
 }
 
 /**
+ * 合法的用户名
  * @param {string} str
  * @returns {Boolean}
  */
@@ -16,6 +18,7 @@ export function validUsername (str) {
 }
 
 /**
+ * 合法的URL
  * @param {string} url
  * @returns {Boolean}
  */

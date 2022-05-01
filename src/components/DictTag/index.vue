@@ -3,7 +3,7 @@
     <template v-for="(item, index) in options">
       <template v-if="values.includes(item.value)">
         <span
-          v-if="item.raw.listClass == 'default' || item.raw.listClass == ''"
+          v-if="item.raw.listClass === 'default' || item.raw.listClass === ''"
           :key="item.value"
           :index="index"
           :class="item.raw.cssClass"
@@ -14,7 +14,7 @@
           :disable-transitions="true"
           :key="item.value"
           :index="index"
-          :type="item.raw.listClass == 'primary' ? '' : item.raw.listClass"
+          :type="item.raw.listClass === 'primary' ? '' : item.raw.listClass"
           :class="item.raw.cssClass"
         >
           {{ item.label }}
@@ -33,6 +33,9 @@ export default {
       default: null,
     },
     value: [Number, String, Array],
+  },
+  created () {
+    console.log (this.options)
   },
   computed: {
     values() {

@@ -95,16 +95,12 @@
         </template>
       </el-table-column>
 
-
-      <el-table-column label="用户头像" align="center" prop="headImg">
+      <el-table-column label="用户头像" align="center" prop="headImg" width="100">
         <template slot-scope="scope">
-          <el-image
-              style="width: 100px; height: 100px"
-              :src="scope.row.headImg" :preview-src-list="new Array(scope.row.headImg)"
-              lazy
-          ></el-image>
+          <image-preview :src="scope.row.headImg" :width="50" :height="50"/>
         </template>
       </el-table-column>
+
       <el-table-column label="扩展字段" align="center" prop="extend" />
       <el-table-column label="创建时间" align="center" prop="createTime" width="180">
         <template slot-scope="scope">
@@ -162,8 +158,8 @@
             </el-radio>
           </el-radio-group>
         </el-form-item>
-        <el-form-item label="用户头像" prop="headImg">
-          <el-input v-model="form.headImg" placeholder="请输入用户头像" />
+        <el-form-item label="用户头像">
+          <image-upload v-model="form.headImg" :limit="1"/>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
