@@ -42,3 +42,16 @@ export function delMember(userId) {
     method: 'delete'
   })
 }
+
+// 会员状态修改
+export function changeUserFlag (userId, delFlag) {
+  const data = {
+    userId,
+    delFlag
+  }
+  return request ({
+    url: '/user/member/' + userId,
+    method: 'put',
+    data: data
+  })
+}

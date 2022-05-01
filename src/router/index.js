@@ -161,7 +161,21 @@ export const dynamicRoutes = [
         meta: { title: '修改生成配置', activeMenu: '/tool/gen' }
       }
     ]
-  }
+  },
+  {
+    path: '/user',
+    component: Layout,
+    hidden: true,
+    permissions: ['user:member:list'],
+    children: [
+      {
+        path: 'extra/:userId(\\d+)',
+        component: () => import('@/views/user/extra'),
+        name: 'MemberExtra',
+        meta: { title: '会员详情', activeMenu: '/user/member' }
+      }
+    ]
+  },
 ]
 
 // 防止连续点击多次路由报错

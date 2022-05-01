@@ -178,7 +178,9 @@
       </el-table-column>
       <el-table-column label="删除标志" align="center" prop="delFlag">
         <template slot-scope="scope">
-          <dict-tag :options="dict.type.tb_member_status" :value="scope.row.delFlag" />
+          <el-switch v-model="scope.row.delFlag" active-value="0" inactive-value="1"
+                     @change="handleFlagChange(scope.row)"
+          ></el-switch>
         </template>
       </el-table-column>
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
@@ -199,6 +201,15 @@
               v-hasPermi="['user:member:remove']"
           >删除
           </el-button>
+          <el-dropdown size="mini" @command="(command) => handleCommand(command, scope.row)" v-hasPermi="['system:role:edit']">
+            <span class="el-dropdown-link">
+              <i class="el-icon-d-arrow-right el-icon--right"></i>更多
+            </span>
+            <el-dropdown-menu slot="dropdown">
+              <el-dropdown-item command="handToMemberExtra" icon="el-icon-circle-check"
+                                v-hasPermi="['user:extra:list']">会员详情</el-dropdown-item>
+            </el-dropdown-menu>
+          </el-dropdown>
         </template>
       </el-table-column>
     </el-table>
@@ -298,7 +309,7 @@
 </template>
 
 <script>
-import { listMember, getMember, delMember, addMember, updateMember } from '@/api/user/member'
+import { listMember, getMember, delMember, addMember, updateMember, changeUserFlag } from '@/api/user/member'
 
 export default {
   name: 'Member',
@@ -432,6 +443,21 @@ export default {
       this.single = selection.length !== 1
       this.multiple = !selection.length
     },
+    // 更多操作触发
+    handleCommand(command, row) {
+      console.log (command, row)
+      switch (command) {
+        case "handToMemberExtra":
+          this.handToMemberExtra(row);
+          break;
+        default:
+          break;
+      }
+    },
+    handToMemberExtra (row) {
+      console.log (row)
+      this.$router.push("/user/extra/" + row.userId);
+    },
     /** 新增按钮操作 */
     handleAdd () {
       this.reset ()
@@ -447,6 +473,17 @@ export default {
         this.form = response.data
         this.open = true
         this.title = '修改会员管理'
+      })
+    },
+    // 用户状态修改
+    handleFlagChange (row) {
+      let text = row.delFlag === '0' ? '启用' : '停用'
+      this.$modal.confirm ('确认要"' + text + '""' + row.username + '"用户吗？').then (function() {
+        return changeUserFlag (row.userId, row.delFlag)
+      }).then (() => {
+        this.$modal.msgSuccess ('成功')
+      }).catch (function() {
+        row.delFlag = row.delFlag === '0' ? '1' : '0'
       })
     },
     /** 提交按钮 */

@@ -176,7 +176,6 @@
 
 <script>
 import { listExtra, getExtra, delExtra, addExtra, updateExtra, changeUserFlag } from '@/api/user/extra'
-import { changeUserStatus } from '@/api/system/user'
 
 export default {
   name: 'Extra',
@@ -226,6 +225,10 @@ export default {
     }
   },
   created () {
+    const userId = this.$route.params && this.$route.params.userId;
+    if (userId) {
+      this.queryParams.userId = userId;
+    }
     this.getList ()
   },
   methods: {

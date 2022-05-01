@@ -43,7 +43,7 @@ export function delExtra (userId) {
   })
 }
 
-// 用户会员修改
+// 会员信息状态修改
 export function changeUserFlag (userId, delFlag) {
   const data = {
     userId,
