@@ -25,8 +25,8 @@
             @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="是否为品牌制造商" prop="factoryStatus">
-        <el-select v-model="queryParams.factoryStatus" placeholder="请选择是否为品牌制造商" clearable>
+      <el-form-item label="是否品牌制造商" prop="factoryStatus">
+        <el-select v-model="queryParams.factoryStatus" placeholder="请选择是否品牌制造商" clearable>
           <el-option
               v-for="dict in dict.type.tb_product_status"
               :key="dict.value"
@@ -119,7 +119,7 @@
       <el-table-column label="品牌名" align="center" prop="name" />
       <el-table-column label="首字母" align="center" prop="firstLetter" />
       <el-table-column label="排序" align="center" prop="sort" />
-      <el-table-column label="是否为品牌制造商" align="center" prop="factoryStatus">
+      <el-table-column label="是否品牌制造商" align="center" prop="factoryStatus">
         <template slot-scope="scope">
           <dict-tag :options="dict.type.tb_product_status" :value="scope.row.factoryStatus"/>
         </template>

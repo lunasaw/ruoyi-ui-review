@@ -1,4 +1,4 @@
-import { mergeRecursive } from "@/utils/ruoyi";
+import { mergeRecursive } from "@/utils/tool";
 import DictOptions from './DictOptions'
 
 /**
